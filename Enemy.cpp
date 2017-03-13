@@ -36,6 +36,7 @@ void Enemy::randPos()
 }
 void Enemy::main()
 {
+	boundBox = Sprite.getGlobalBounds();
 	Sprite.move(speed);
 	pos = Sprite.getPosition();
 	if (getPos().y + getSize()[1] > bound[1])

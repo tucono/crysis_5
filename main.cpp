@@ -2,15 +2,23 @@
 #include <iostream> //for debugging
 #include "Enemy.h"
 #include "Player.h"
+#include "Background.h"
 #include <vector>
 
 int main()
 {
 	std::string fileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Textures\\";//Texture File Location
 	int res[2] = { 1000, 800 }; // set resolution
-	srand(time(0)); //seed rand() ?
+	srand(time(0)); //seed rand() 
 	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");//create game window
-	sf::RectangleShape windRect(sf::Vector2f(res[0], res[1]));//background
+	
+	sf::Texture bgText;
+	if (!bgText.loadFromFile(fileLoc + "Space.png"))
+	{
+		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
+	}
+	Background background(bgText, 0.1, 0, 0, 1);
+	/*sf::RectangleShape windRect(sf::Vector2f(res[0], res[1]));//background
 	//windRect.setFillColor(sf::Color::Green);
 	sf::Texture background;
 	if (!background.loadFromFile(fileLoc + "Space.png"))
@@ -19,7 +27,7 @@ int main()
 	}
 	windRect.setTexture(&background);
 
-	sf::FloatRect windBound = windRect.getGlobalBounds();//get bounds for windows
+	sf::FloatRect windBound = windRect.getGlobalBounds();//get bounds for windows*/
 
 	sf::Texture enTexture; //85 x 107
 	if (!enTexture.loadFromFile(fileLoc + "koreaEnemy.png"))
@@ -52,23 +60,29 @@ int main()
 				window.close();
 		}
 		window.clear();
-		window.draw(windRect);
-		//draw all elements here RENDERING WORKS :D
-		for (std::vector<Enemy>::iterator i = enVector.begin(); i != enVector.end(); ++i) //Iterating through vectors
+		//draw all elements here
+
+		for (int i = 0; i != background.getSpriteVector().size() - 1; i++)//draw background
+		{
+			//background.main();
+			window.draw(background.getSprite(i));
+		}
+
+		for (std::vector<Enemy>::iterator i = enVector.begin(); i != enVector.end(); ++i) //draw enemies
 		{
 			i->main();
 			for (std::vector<Enemy>::iterator k = enVector.begin(); k != enVector.end(); ++k)
 			{
 				if (k != i)//only check against other enemy ERROR HERE
 				{
-					if (i->getBoundBox().intersects(k->getBoundBox()))//intersects other enemy
+					if (i->getBoundBox().intersects(k->getBoundBox()))//intersects other enemy (always true, need to check for fix)
 					{
-						i->randPos();
+						//i->randPos();
 					}
 				}
-				if (i->getBoundBox().intersects(player.getBoundBox())) // intersects player
+				if (i->getBoundBox().intersects(player.getBoundBox())) // intersects player (always true, need to check for fix)
 				{
-					i->randPos();
+					//i->randPos();
 				}
 			}
 			window.draw(i->getSprite());//draw Enemies
