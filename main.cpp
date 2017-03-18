@@ -45,12 +45,13 @@ int main()
 	for (int i = 0; i < 3; i++) //will generate multiple enemies with random positions
 	{
 		Enemy enemy(res[0] ,res[1], 0.5 , enTexture); //create new enemy
-		enemy.setSize(85, 107); //set size of enemy based on png texture
 		enVector.push_back(enemy); //plug it into vector
+		enVector[i].setPos(i * 100, 0);
 	}
 
 	Player player(res[0] / 2, 900, 0.2f, res[0], res[1], 0.5, plTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
-	player.setSize(78, 108); //set size of player based on png texture
+	player.setPos(200, 200);
+
 	while (window.isOpen()) //Game Loop
 	{
 		sf::Event event;
@@ -62,9 +63,17 @@ int main()
 		window.clear();
 		//draw all elements here
 
-		for (int i = 0; i != background.getSpriteVector().size() - 1; i++)//draw background
+		for (int i = 0; i != background.getSpriteVector().size(); i++)//draw background
 		{
-			//background.main();
+			if (background.getSprite(1).getGlobalBounds().height >= res[1] && background.getOrient()) //background 1 is at bottom, and orient is 1
+			{
+				background.resetIter();//reverse background formation
+			}
+			if (background.getSprite(0).getGlobalBounds().height >= res[1] && !background.getOrient()) //background 0 is at bottom, and orient is 0
+			{
+				background.resetIter();
+			}
+			background.main();
 			window.draw(background.getSprite(i));
 		}
 
@@ -77,11 +86,13 @@ int main()
 				{
 					if (i->getBoundBox().intersects(k->getBoundBox()))//intersects other enemy (always true, need to check for fix)
 					{
+						std::cout << "intersecting enemy" << std::endl;
 						//i->randPos();
 					}
 				}
-				if (i->getBoundBox().intersects(player.getBoundBox())) // intersects player (always true, need to check for fix)
+				if (i->getBoundBox().intersects(player.getBoundBox())) // intersects player
 				{
+					std::cout << "intersecting player" << std::endl;
 					//i->randPos();
 				}
 			}

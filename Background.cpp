@@ -13,6 +13,7 @@ Background::Background(sf::Texture &backTexture, float nSpeed, float xPos, float
 		i->setScale(scale, scale);
 	}
 	speed = sf::Vector2f(0, nSpeed);
+	orient = 1;
 }
 
 void Background::setPos(float nPos[2])
@@ -36,6 +37,10 @@ void Background::flipOrient()
 {
 	orient *= -1;
 }
+void Background::resetIter()
+{
+	iter = 0;
+}
 std::vector<sf::Sprite> Background::getSpriteVector()//theoretical?
 {
 	return backVec;
@@ -48,22 +53,31 @@ sf::Vector2f Background::getSpeed()
 {
 	return speed;
 }
+bool Background::getOrient()
+{
+	return orient;
+}
 
 void Background::main()
 {
+	//backVec[0].move(-speed);
+	//backVec[1].move(speed);
 	if (orient && iter == 0)//if orient = 1, back 0 is on top
 	{
 		backVec[0].setPosition(0, 0);
 		backVec[1].setPosition(0, backVec[0].getGlobalBounds().height); //need to check if works
+		flipOrient();
 	}
 	else if (!orient && iter == 0)//if orient = 0, back 1 is on top		
 	{
 		backVec[1].setPosition(0, 0);
 		backVec[0].setPosition(0, backVec[1].getGlobalBounds().height);
+		flipOrient();
 	}
 	else
 	{
 		backVec[0].move(speed);
 		backVec[1].move(speed);
 	}
+	iter++;
 }

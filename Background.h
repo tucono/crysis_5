@@ -19,9 +19,11 @@ public:
 	void setSpeed(float nSpeed);
 	void setScale(float nScale);
 	void flipOrient();
+	void resetIter();
 	std::vector<sf::Sprite> getSpriteVector();
 	sf::Sprite getSprite(std::vector<sf::Sprite>::size_type i);
 	sf::Vector2f getSpeed();
+	bool getOrient();
 	void main();
 
 };

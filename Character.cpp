@@ -26,10 +26,10 @@ void Character::setScale(float xScale, float yScale)
 	scale.x = xScale;
 	scale.y = yScale;
 }
-void Character::setSize(int xSize, int ySize)
+void Character::setSize()
 {
-	size[0] = xSize;
-	size[1] = ySize;
+	size[0] = Sprite.getGlobalBounds().width;
+	size[1] = Sprite.getGlobalBounds().height;
 }
 sf::Vector2f Character::getPos()
 {

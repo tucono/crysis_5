@@ -15,6 +15,7 @@ Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture)
 	//setPos(pos[0], pos[1]);
 	randPos();
 	randSpeed();
+	setSize();
 }
 Enemy::Enemy(float nxpos, float nypos) //simplistic overload
 {
@@ -26,22 +27,24 @@ Enemy::Enemy(float nxpos, float nypos) //simplistic overload
 void Enemy::randSpeed()
 {
 	speed.x = 0;
-	//speed.y = (rand()%10 + 1)*0.01f;
-	speed.y = 0.1f;
+	speed.y = (rand()%10 +1)*0.01f;
 }
 void Enemy::randPos()
 {
-	Sprite.setPosition(sf::Vector2f(rand() % (bound[0]+getSize()[0]*int(scale.x)*2) - getSize()[0] * int(scale.x) * 2, 0)); // still needs fix to always spawn in render window
+	int lBound = bound[1];
+	int rBound = bound[0] - size[0];
+	float nPos = rand() % rBound;
+	Sprite.setPosition(sf::Vector2f(nPos,0)); // still needs fix to always spawn in render window
 
 }
 void Enemy::main()
 {
 	boundBox = Sprite.getGlobalBounds();
-	Sprite.move(speed);
+	//Sprite.move(speed);
 	pos = Sprite.getPosition();
-	if (getPos().y + getSize()[1] > bound[1])
+	if (getPos().y + size[1] > bound[1])
 	{
-		randPos(); //reset it back to top
+		//randPos(); //reset it back to top
 		randSpeed();
 	}
 }
