@@ -50,5 +50,6 @@ void Player::moveCheck()//Movement Grid => right = +, down = +
 }
 void Player::main()
 {
+	boundBox = Sprite.getGlobalBounds();
 	moveCheck();
 }

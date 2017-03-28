@@ -84,16 +84,14 @@ int main()
 			{
 				if (k != i)//only check against other enemy ERROR HERE
 				{
-					if (i->getBoundBox().intersects(k->getBoundBox()))//intersects other enemy (always true, need to check for fix)
+					if (i->getBoundBox().intersects(k->getBoundBox()))//intersects other enemy
 					{
-						std::cout << "intersecting enemy" << std::endl;
-						//i->randPos();
+						i->randPos();
 					}
 				}
 				if (i->getBoundBox().intersects(player.getBoundBox())) // intersects player
 				{
-					std::cout << "intersecting player" << std::endl;
-					//i->randPos();
+					i->randPos();
 				}
 			}
 			window.draw(i->getSprite());//draw Enemies

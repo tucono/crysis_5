@@ -40,11 +40,11 @@ void Enemy::randPos()
 void Enemy::main()
 {
 	boundBox = Sprite.getGlobalBounds();
-	//Sprite.move(speed);
+	Sprite.move(speed);
 	pos = Sprite.getPosition();
 	if (getPos().y + size[1] > bound[1])
 	{
-		//randPos(); //reset it back to top
+		randPos(); //reset it back to top
 		randSpeed();
 	}
 }
