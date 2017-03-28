@@ -9,7 +9,7 @@ private:
 
 public:
 	Bullet(float xpos, float ypos, float scale, sf::Texture &nTexture);
+	void main();
 };
-
 
 #endif
