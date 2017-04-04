@@ -14,7 +14,7 @@ private:
 	sf::Vector2f origin; //set size of window
 	bool orient; int iter;
 public:
-	Background(sf::Texture &backTexture, float nSpeed, float xPos, float yPos, float scale);
+	Background(sf::Texture &backTexture, float nSpeed, float xPos, float yPos, float windowHeight);
 	void setPos(float nPos[2]);
 	void setSpeed(float nSpeed);
 	void setScale(float nScale);

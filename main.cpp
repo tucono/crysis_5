@@ -17,7 +17,7 @@ int main()
 	{
 		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
 	}
-	Background background(bgText, 0.1, 0, 0, 1);
+	Background background(bgText, 0.1, 0, 0, res[1]);
 	/*sf::RectangleShape windRect(sf::Vector2f(res[0], res[1]));//background
 	//windRect.setFillColor(sf::Color::Green);
 	sf::Texture background;
@@ -63,7 +63,7 @@ int main()
 		window.clear();
 		//draw all elements here
 
-		for (int i = 0; i != background.getSpriteVector().size(); i++)//draw background
+		/*for (int i = 0; i != background.getSpriteVector().size(); i++)//draw background
 		{
 			if (background.getSprite(1).getGlobalBounds().height >= res[1] && background.getOrient()) //background 1 is at bottom, and orient is 1
 			{
@@ -75,7 +75,10 @@ int main()
 			}
 			background.main();
 			window.draw(background.getSprite(i));
-		}
+		}*/
+		background.main();
+		window.draw(background.getSprite(0));
+		window.draw(background.getSprite(1));
 
 		for (std::vector<Enemy>::iterator i = enVector.begin(); i != enVector.end(); ++i) //draw enemies
 		{

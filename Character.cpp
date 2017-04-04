@@ -43,7 +43,7 @@ sf::FloatRect Character::getBoundBox() //access bounding box
 {
 	return boundBox;
 }
-int* Character::getSize()
+float* Character::getSize()
 {
 	return size;
 }

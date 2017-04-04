@@ -10,8 +10,8 @@ protected:
 	sf::Vector2f speed;
 	sf::Sprite Sprite; //Sprite that does all the work
 	sf::FloatRect boundBox; //bounding box for sprite
-	int bound[2]; //set bounds for enemy
-	int size[2]; //stores size of enemy
+	float bound[2]; //set bounds for enemy
+	float size[2]; //stores size of enemy
 public:
 	Character();
 	//Character(float nxpos, float nypos, int xBound, int yBound, int seed, sf::Texture &nTexture);
@@ -27,7 +27,7 @@ public:
 	sf::Vector2f getPos(); //set as pointer to return an array (returns pointer to first el in array); [xpos, ypos]
 	sf::Sprite getSprite();
 	sf::FloatRect getBoundBox();
-	int* getSize();
+	float* getSize();
 	sf::Vector2f getScale();
 };
 
