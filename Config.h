@@ -5,12 +5,13 @@
 class Config{
 private:
 	std::ifstream configIn;
-	std::ofstream configOut;
+	std::fstream configOut;
 	std::string fileLoc;
 public:
 	Config(std::string nFileLoc);
-	std::string getConfigString(std::string lookup, std::string default);
-	float getConfigFloat(std::string lookup, float defNum);
+	std::string getConfig(std::string lookup, std::string defStr);
+	float getConfig(std::string lookup, float defNum);
+	int getConfig(std::string lookup, int defNum);
 	//void close();
 };
 #endif

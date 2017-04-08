@@ -7,36 +7,33 @@
 #include <vector>
 
 int main(){
-	std::string fileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Textures\\";//Texture File Location
-	int res[2] = { 1000, 800 }; // set resolution
-	srand(time(0)); //seed rand()
+	std::string fileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Textures/";//Texture File Location
 	Config cfg("C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt");
-	float test = cfg.getConfigFloat("test", 0.0f);//test config
-	float N = cfg.getConfigFloat("new", 10.1);
-	std::cout << test << " " << N << std::endl;
+	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; // set resolution
+	srand(time(0)); //seed rand()
 	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");//create game window
 	sf::Texture bgText;
-	if (!bgText.loadFromFile(fileLoc + "Space.png")){
+	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))){
 		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
 	}
 	Background background(bgText, 0.1, 0, 0, res[1]);
 	sf::Texture enTexture; //85 x 107
-	if (!enTexture.loadFromFile(fileLoc + "koreaEnemy.png")) {
+	if (!enTexture.loadFromFile(cfg.getConfig("enTextureLoc",fileLoc + "koreaEnemy.png"))) {
 		std::cout << "ERROR IN ENEMY TEXTURE LOADING\n";
 	}
 	sf::Texture plTexture; //78 x 108
-	if (!plTexture.loadFromFile(fileLoc + "playerChar.png")){
+	if (!plTexture.loadFromFile(cfg.getConfig("plTextureLoc",fileLoc + "playerChar.png"))) {
 		std::cout << "ERROR IN PLAYER TEXTURE LOADING\n";
 	}
 	std::vector<Enemy> enVector;
 	for (int i = 0; i < 3; i++){ //generate enemies with multiple positions + speed
-		Enemy enemy(res[0] ,res[1], 0.5 , enTexture); //create new enemy
+		Enemy enemy(res[0] ,res[1], cfg.getConfig("enScale",0.5f) , enTexture); //create new enemy
 		enVector.push_back(enemy); //plug it into vector
 		enVector[i].setPos(i * 100, 0);
 	}
 
-	Player player(res[0] / 2, 900, 0.2f, res[0], res[1], 0.5, plTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
-	player.setPos(200, 200);
+	Player player(200, 200, cfg.getConfig("plSpeed",0.2f), res[0], res[1], cfg.getConfig("plScale",0.5f), plTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
+	//player.setPos(200, 200);
 
 	while (window.isOpen()){
 		sf::Event event;
@@ -52,15 +49,15 @@ int main(){
 
 		for (std::vector<Enemy>::iterator i = enVector.begin(); i != enVector.end(); ++i){
 			i->main();
-			for (std::vector<Enemy>::iterator k = enVector.begin(); k != enVector.end(); ++k){
+			/*for (std::vector<Enemy>::iterator k = enVector.begin(); k != enVector.end(); ++k){ //collision between enemies
 				if (k != i){
 					if (i->getBoundBox().intersects(k->getBoundBox())){
 						i->randPos();
 					}
 				}
-				if (i->getBoundBox().intersects(player.getBoundBox())){
-					i->randPos();
-				}
+			}*/
+			if (i->getBoundBox().intersects(player.getBoundBox())) {
+				i->randPos();
 			}
 			window.draw(i->getSprite());//draw Enemies
 		}

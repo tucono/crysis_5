@@ -1,1 +1,8 @@
-test = 5
+xres = 1000
+yres = 800
+bgTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Textures/Space.png
+enTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Textures/koreaEnemy.png
+plTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Textures/playerChar.png
+enScale = 1.0
+plScale = 1.0
+plSpeed = 0.2

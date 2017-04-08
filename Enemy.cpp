@@ -30,7 +30,7 @@ void Enemy::randPos(){
 	int rBound = bound[0] - size[0];
 	float nPos = rand() % rBound;
 	Sprite.setPosition(sf::Vector2f(nPos,0)); // still needs fix to always spawn in render window
-
+	randSpeed();//random speed with random position
 }
 void Enemy::main(){
 	boundBox = Sprite.getGlobalBounds();

@@ -19,6 +19,7 @@ void Character::setBound(int xBound, int yBound){
 void Character::setScale(float xScale, float yScale){
 	scale.x = xScale;
 	scale.y = yScale;
+	Sprite.setScale(scale);
 }
 void Character::setSize(){
 	size[0] = Sprite.getGlobalBounds().width;
