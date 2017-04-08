@@ -4,8 +4,7 @@
 #include<SFML/Graphics.hpp>
 #include "Character.h"
 //class Enemy:Character
-class Enemy : public Character
-{
+class Enemy : public Character{
 private:
 public:
 	Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture);

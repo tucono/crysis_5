@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.h"
 
-class Player : public Character
-{
+class Player : public Character{
 private:
 
 public:

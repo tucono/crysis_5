@@ -2,15 +2,15 @@
 #define CONFIG_h
 #include <fstream>
 #include <string>
-class Config
-{
+class Config{
 private:
-	std::ofstream configFile;
+	std::ifstream configIn;
+	std::ofstream configOut;
+	std::string fileLoc;
 public:
-	Config(std::string fileLoc);
-	std::string getConfig(std::string lookup);
-	void close();
+	Config(std::string nFileLoc);
+	std::string getConfigString(std::string lookup, std::string default);
+	float getConfigFloat(std::string lookup, float defNum);
+	//void close();
 };
-
-
 #endif

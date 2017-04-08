@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <ctime>
 
-Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture)
-{
+Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture){
 	//pos = sf::Vector2f(nxpos, nypos);
 	bound[0] = xBound;
 	bound[1] = yBound;
@@ -17,28 +16,23 @@ Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture)
 	randSpeed();
 	setSize();
 }
-Enemy::Enemy(float nxpos, float nypos) //simplistic overload
-{
+Enemy::Enemy(float nxpos, float nypos){
 	pos = sf::Vector2f(nxpos, nypos);
 	Sprite.setColor(sf::Color::Red);
 	Sprite.setPosition(pos);
-
 }
-void Enemy::randSpeed()
-{
+void Enemy::randSpeed(){
 	speed.x = 0;
 	speed.y = (rand()%10 +1)*0.01f;
 }
-void Enemy::randPos()
-{
+void Enemy::randPos(){
 	int lBound = bound[1];
 	int rBound = bound[0] - size[0];
 	float nPos = rand() % rBound;
 	Sprite.setPosition(sf::Vector2f(nPos,0)); // still needs fix to always spawn in render window
 
 }
-void Enemy::main()
-{
+void Enemy::main(){
 	boundBox = Sprite.getGlobalBounds();
 	Sprite.move(speed);
 	pos = Sprite.getPosition();

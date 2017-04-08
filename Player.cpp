@@ -2,8 +2,7 @@
 #include <iostream>
 #include "Player.h"
 
-Player::Player(float nxpos, float nypos, float nSpeed, int xBound, int yBound, float scale, sf::Texture &nTexture)
-{
+Player::Player(float nxpos, float nypos, float nSpeed, int xBound, int yBound, float scale, sf::Texture &nTexture){
 	pos = sf::Vector2f(nxpos, nypos);
 	bound[0] = xBound;
 	bound[1] = yBound;
@@ -13,16 +12,13 @@ Player::Player(float nxpos, float nypos, float nSpeed, int xBound, int yBound, f
 	setSpeed(nSpeed, nSpeed);
 	setSize();
 }
-Player::Player(float nxpos, float nypos) //simplistic overload
-{
+Player::Player(float nxpos, float nypos){
 	pos = sf::Vector2f(nxpos, nypos);
 	Sprite.setColor(sf::Color::Red);
 	Sprite.setPosition(pos);
 }
-void Player::moveCheck()//Movement Grid => right = +, down = +
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && Sprite.getPosition().x + size[0]< bound[0]) //check right
-	{
+void Player::moveCheck(){ //Movement Grid
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && Sprite.getPosition().x + size[0]< bound[0]){ //check right
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && Sprite.getPosition().y  > 0)//right+up
 			Sprite.move(speed.x * 1 / sqrt(2), -speed.y * 1 / sqrt(2));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && Sprite.getPosition().y + size[1]< bound[1])//right+down
@@ -30,8 +26,7 @@ void Player::moveCheck()//Movement Grid => right = +, down = +
 		else //only right
 			Sprite.move(speed.x, 0);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && Sprite.getPosition().x  > 0)
-	{
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && Sprite.getPosition().x  > 0){
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && Sprite.getPosition().y  > 0)//left+up
 			Sprite.move(-speed.x * 1 / sqrt(2), -speed.y * 1 / sqrt(2));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && Sprite.getPosition().y + size[1] < bound[1])//left+down
@@ -39,17 +34,14 @@ void Player::moveCheck()//Movement Grid => right = +, down = +
 		else //only left
 			Sprite.move(-speed.x, 0);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && Sprite.getPosition().y + size[1] < bound[1])
-	{
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && Sprite.getPosition().y + size[1] < bound[1]){
 		Sprite.move(0, speed.y);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && Sprite.getPosition().y  > 0)
-	{
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && Sprite.getPosition().y  > 0){
 		Sprite.move(0, -speed.y);
 	}
 }
-void Player::main()
-{
+void Player::main(){
 	boundBox = Sprite.getGlobalBounds();
 	moveCheck();
 }

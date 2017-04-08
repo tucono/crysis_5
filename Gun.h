@@ -8,6 +8,7 @@ class Gun {
 private:
 	std::vector<Bullet> bulVect;
 public:
-
+	void fire(float xPos, float yPos, float speed);
+	void main();
 };
 #endif

@@ -2,8 +2,7 @@
 #define CHARACTER_h
 
 #include<SFML/Graphics.hpp>
-class Character
-{
+class Character{
 protected:
 	sf::Vector2f pos;
 	sf::Vector2f scale;

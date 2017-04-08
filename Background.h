@@ -4,8 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class Background
-{
+class Background{
 private:
 	std::vector<sf::Sprite> backVec;
 	sf::Vector2f speed;

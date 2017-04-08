@@ -6,8 +6,7 @@ Background::Background(sf::Texture &backTexture, float nSpeed, float xPos, float
 	sf::Sprite sprite1; sf::Sprite sprite2;
 	backVec.push_back(sprite1);
 	backVec.push_back(sprite2);
-	for (std::vector<sf::Sprite>::iterator i = backVec.begin(); i != backVec.end(); ++i) //Iterating through vectors
-	{
+	for (std::vector<sf::Sprite>::iterator i = backVec.begin(); i != backVec.end(); ++i){ //set textures/positions 
 		i->setTexture(backTexture);
 		i->setPosition(sf::Vector2f(xPos, yPos));
 	}
@@ -26,8 +25,7 @@ void Background::setSpeed(float nSpeed){
 void Background::setScale(float nScale){
 	scale.x = nScale;
 	scale.y = nScale;
-	for (std::vector<sf::Sprite>::iterator i = backVec.begin(); i != backVec.end(); ++i)
-	{
+	for (std::vector<sf::Sprite>::iterator i = backVec.begin(); i != backVec.end(); ++i){
 		i->setScale(scale.x, scale.y);
 	}
 }
@@ -60,5 +58,4 @@ void Background::main(){
 	backVec[0].move(speed);
 	backVec[1].move(speed);
 	iter = 1;
-
 }
