@@ -8,6 +8,7 @@ private:
 	std::fstream configOut;
 	std::string fileLoc;
 public:
+	Config();
 	Config(std::string nFileLoc);
 	std::string getConfig(std::string lookup, std::string defStr);
 	float getConfig(std::string lookup, float defNum);

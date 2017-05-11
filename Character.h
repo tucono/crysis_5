@@ -1,6 +1,5 @@
 #ifndef CHARACTER_h
 #define CHARACTER_h
-
 #include<SFML/Graphics.hpp>
 class Character{
 protected:
@@ -23,7 +22,7 @@ public:
 	void setSize(); //may change to int from sf::Vector2f as Sprite doesn't use size
 	//void randPos();
 	//void randSpeed();
-	sf::Vector2f getPos(); //set as pointer to return an array (returns pointer to first el in array); [xpos, ypos]
+	sf::Vector2f getPos(); 
 	sf::Sprite getSprite();
 	sf::FloatRect getBoundBox();
 	float* getSize();

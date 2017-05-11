@@ -4,6 +4,11 @@
 #include <sstream>
 #include "Config.h"
 
+Config::Config()
+{
+	fileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt";
+}
+
 Config::Config(std::string nFileLoc) {
 	fileLoc = nFileLoc; //set config file location
 }
@@ -38,8 +43,8 @@ std::string Config::getConfig(std::string lookup, std::string defStr) { //CANNOT
 		configOut << "\n" << lookup << " = " << defStr;
 		configOut.close();
 		std::cout << "Config file output closed\n";
-		configIn.open(fileLoc);
-		std::cout << "Config file input opened\n";
+		//configIn.open(fileLoc);
+		//std::cout << "Config file input opened\n";
 		return defStr;
 	}
 	else {
