@@ -13,7 +13,8 @@ Background::Background(sf::Texture &backTexture, float nSpeed, float xPos, float
 	float nScale = windowHeight / backVec[0].getGlobalBounds().height; //set background to window height
 	setScale(nScale);
 	speed = sf::Vector2f(0, nSpeed);
-	orient = 1;
+	init = false;
+	//orient = 1;
 }
 
 void Background::setPos(float nPos[2]){
@@ -29,12 +30,6 @@ void Background::setScale(float nScale){
 		i->setScale(scale.x, scale.y);
 	}
 }
-void Background::flipOrient(){
-	orient *= -1;
-}
-void Background::resetIter(){
-	iter = 0;
-}
 std::vector<sf::Sprite> Background::getSpriteVector(){
 	return backVec;
 }
@@ -45,9 +40,10 @@ sf::Vector2f Background::getSpeed(){
 	return speed;
 }
 void Background::main(){
-	if (iter == 0) {
+	if (!init) {//initialization of background
 		backVec[0].setPosition(0, 0);
 		backVec[1].setPosition(0, -backVec[0].getGlobalBounds().height); //attachment works
+		init = true;
 	}
 	if (backVec[0].getPosition().y > backVec[0].getGlobalBounds().height) {
 		backVec[0].setPosition(0, -backVec[1].getGlobalBounds().height); //once it goes below screen, set on top of background 1
@@ -57,5 +53,4 @@ void Background::main(){
 	}
 	backVec[0].move(speed);
 	backVec[1].move(speed);
-	iter = 1;
 }

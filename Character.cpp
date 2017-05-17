@@ -4,9 +4,9 @@
 #include <ctime>
 
 Character::Character(){}
-void Character::setPos(float nxpos, float nypos){ //set position of character
-	pos = sf::Vector2f(nxpos, nypos);
-	Sprite.setPosition(pos);
+void Character::setPos(sf::Vector2f nPos){ //set position of character
+	//pos = sf::Vector2f(nxpos, nypos);
+	Sprite.setPosition(nPos);
 }
 void Character::setSpeed(float xSpeed, float ySpeed){
 	speed.x = xSpeed;

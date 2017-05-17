@@ -8,12 +8,10 @@ Config::Config()
 {
 	fileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt";
 }
-
 Config::Config(std::string nFileLoc) {
 	fileLoc = nFileLoc; //set config file location
 }
-
-std::string Config::getConfig(std::string lookup, std::string defStr) { //CANNOT DELETE SPACES
+std::string Config::getConfig(std::string lookup, std::string defStr) { //Obtain string in cfg
 	std::string line;
 	std::string info;
 	configIn.open(fileLoc);
@@ -22,7 +20,7 @@ std::string Config::getConfig(std::string lookup, std::string defStr) { //CANNOT
 		std::cout << "File opened. Looking for " << lookup << std::endl;
 		while (getline(configIn, line)) {
 			if (line.find(lookup) != std::string::npos) { //Found lookup (lookup starts at char 0)
-				if (line.find("= ") != std::string::npos) {//Shitty hack to seperate "= " and "="
+				if (line.find("= ") != std::string::npos) {//Seperate "= " and "="
 					loc = line.find("= ");
 					loc = loc + 2;
 				}
@@ -54,7 +52,7 @@ std::string Config::getConfig(std::string lookup, std::string defStr) { //CANNOT
 	return defStr;
 }
 
-float Config::getConfig(std::string lookup, float defNum) { //overloaded for floats
+float Config::getConfig(std::string lookup, float defNum) { //overloaded for float
 	std::string line;
 	std::string info;
 	float num;
@@ -91,7 +89,7 @@ float Config::getConfig(std::string lookup, float defNum) { //overloaded for flo
 	return defNum;
 }
 
-int Config::getConfig(std::string lookup, int defNum) { //overloaded for floats
+int Config::getConfig(std::string lookup, int defNum) { //overloaded for int
 	std::string line;
 	std::string info;
 	std::string::size_type sz;

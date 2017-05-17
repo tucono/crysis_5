@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <ctime>
 
-Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture){
+Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture, sf::Texture &bTexture){
 	//pos = sf::Vector2f(nxpos, nypos);
 	bound[0] = xBound;
 	bound[1] = yBound;
@@ -15,11 +15,23 @@ Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture){
 	randPos();
 	randSpeed();
 	setSize();
+	gun.setTexture(bTexture);
 }
 Enemy::Enemy(float nxpos, float nypos){
 	pos = sf::Vector2f(nxpos, nypos);
 	Sprite.setColor(sf::Color::Red);
 	Sprite.setPosition(pos);
+}
+Gun &Enemy::getGun() {
+	return gun;
+}
+/*Enemy& Enemy::operator=(const Enemy& other) {
+	gun = other.gun;
+}*/
+void Enemy::fireCheck() { //checks if entity can fire
+	if (gun.getFireCase() == 0) {
+		gun.fireCheck(pos, 1);//cts fire
+	}
 }
 void Enemy::randSpeed(){
 	speed.x = 0;
@@ -41,4 +53,6 @@ void Enemy::main(){
 		randPos(); //reset it back to top
 		randSpeed();
 	}
+	fireCheck();
+	gun.main();
 }
