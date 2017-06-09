@@ -1,8 +1,11 @@
+#define _USE_MATH_DEFINES
+
 #include "SFML/Graphics.hpp"
 #include "Gun.h"
 #include "Bullet.h"
 #include <string>
 #include <iostream>
+#include <cmath>
 
 Gun::Gun() {
 	cfg = Config("C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt");
@@ -11,7 +14,7 @@ Gun::Gun() {
 		std::cout << "ERROR LOADING BULLET TEXTURE\n";
 	}
 	bulText = nText;
-	Bullet bullet(sf::Vector2f(0,0), 0, bulText);
+	Bullet bullet(sf::Vector2f(0,0), 0, 0, 0, bulText);
 	bulVect.push_back(bullet);
 	sCase = 0;
 }
@@ -34,31 +37,40 @@ int Gun::getFireCase() {
 void Gun::setTexture(sf::Texture& nTexture) {
 	bulText = nTexture;
 }
-void Gun::fire(sf::Vector2f nPos, float speed) {
+void Gun::setBound(int xBound, int yBound) {
+	bound[0] = xBound;
+	bound[1] = yBound;
+}
+void Gun::fire(sf::Vector2f nPos, float rot, float speed) {
+	//std::cout << "Bullet rotation: " << rot << std::endl;
+	//std::cout << "Bullet xSpeed: " << sin(rot) << "\tBullet ySpeed: " << cos(rot) << std::endl;
 	for (std::vector<Bullet>::iterator i = bulVect.begin(); i != bulVect.end(); i++) {//Check unused bullets first
 		if (!i->getShot()) { //if unused found, use it and don't create a new one.
 			i->setPos(nPos);
-			i->setSpeed(0, speed);
+			i->setRot(rot);
+			i->setSpeed(-speed*sin(rot*M_PI / 180), speed*cos(rot*M_PI / 180));
 			i->setShot(true);
 			return;
 		}
 	}
 	float scale = 0.1; //will change to give actual scale later
-	Bullet bullet(nPos, scale, bulText);
-	bullet.setSpeed(0, speed);
+	Bullet bullet(nPos, scale, bound[0], bound[1], bulText);
+	bullet.setRot(rot);
+	bullet.setSpeed(-speed*sin(rot*M_PI/180), speed*cos(rot*M_PI/180));
 	bulVect.push_back(bullet);
+
 }
 void Gun::fireCheck() {
 	switch (sCase) {
 	case 1:
 		fireClock.restart();//start timer from 0
 		dT = fireClock.getElapsedTime();
-		fire(nBulPos, nBulSpeed);
+		fire(nBulPos, nBulRot, nBulSpeed);
 		++sCase;
 		break;
 	case 2:
 		dT = fireClock.getElapsedTime();
-		if (dT.asMilliseconds() > 500) { //wait 1/2 second
+		if (dT.asMilliseconds() > minFireTime) { //wait 1/2 second
 			sCase = 0; //wait until fireCheck is called again
 		}
 		break;
@@ -68,9 +80,11 @@ void Gun::fireCheck() {
 		break;
 	}
 }
-void Gun::fireCheck(sf::Vector2f nPos, float nSpeed) { //Initialize fireCheck() values
+void Gun::fireCheck(sf::Vector2f nPos, float nRot, float nSpeed, float nMinFireTime) { //Initialize fireCheck() values
 	nBulPos = nPos;
 	nBulSpeed = nSpeed;
+	nBulRot = nRot;
+	minFireTime = nMinFireTime;
 	sCase = 1;
 }
 void Gun::main() {

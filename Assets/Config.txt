@@ -4,7 +4,13 @@ bgTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crys
 enTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/koreaEnemy.png
 plTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/playerChar.png
 bulTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png
+bulTextLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png
 enScale = 1.0
+enFireTime_inMS = 500
 plScale = 1.0
 plSpeed = 0.2
-bulTextLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png
+plRotSpeed = 0.1
+plSpeed = 0.2
+plFireTime_inMS = 250
+
+

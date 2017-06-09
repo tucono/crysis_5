@@ -12,6 +12,12 @@ void Character::setSpeed(float xSpeed, float ySpeed){
 	speed.x = xSpeed;
 	speed.y = ySpeed;
 }
+void Character::setRot(float rot) {
+	Sprite.setRotation(rot);
+}
+void Character::setRotSpeed(float speed) {
+	rotSpeed = speed;
+}
 void Character::setBound(int xBound, int yBound){
 	bound[0] = xBound;
 	bound[1] = yBound;

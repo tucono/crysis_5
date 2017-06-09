@@ -4,18 +4,20 @@
 #include <stdlib.h>
 #include <ctime>
 
-Enemy::Enemy(int xBound, int yBound, float scale, sf::Texture &nTexture, sf::Texture &bTexture){
+Enemy::Enemy(int xBound, int yBound, float scale, float nFireTime, sf::Texture &nTexture, sf::Texture &bTexture){
 	//pos = sf::Vector2f(nxpos, nypos);
 	bound[0] = xBound;
 	bound[1] = yBound;
 	Sprite.setTexture(nTexture);
 	setScale(scale, scale);
 	boundBox = Sprite.getGlobalBounds();//set bounding box
+	fireTime = nFireTime;
 	//setPos(pos[0], pos[1]);
 	randPos();
 	randSpeed();
 	setSize();
 	gun.setTexture(bTexture);
+	gun.setBound(bound[0], bound[1]);
 }
 Enemy::Enemy(float nxpos, float nypos){
 	pos = sf::Vector2f(nxpos, nypos);
@@ -30,7 +32,7 @@ Gun &Enemy::getGun() {
 }*/
 void Enemy::fireCheck() { //checks if entity can fire
 	if (gun.getFireCase() == 0) {
-		gun.fireCheck(pos, 1);//cts fire
+		gun.fireCheck(pos,0, 1, fireTime);//cts fire
 	}
 }
 void Enemy::randSpeed(){
