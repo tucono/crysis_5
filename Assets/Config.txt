@@ -12,5 +12,4 @@ plSpeed = 0.2
 plRotSpeed = 0.1
 plSpeed = 0.2
 plFireTime_inMS = 250
-
-
+plSpdMod = 4e-05

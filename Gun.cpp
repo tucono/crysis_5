@@ -48,7 +48,7 @@ void Gun::fire(sf::Vector2f nPos, float rot, float speed) {
 		if (!i->getShot()) { //if unused found, use it and don't create a new one.
 			i->setPos(nPos);
 			i->setRot(rot);
-			i->setSpeed(-speed*sin(rot*M_PI / 180), speed*cos(rot*M_PI / 180));
+			i->setCurSpeed(-speed*sin(rot*M_PI / 180), speed*cos(rot*M_PI / 180));
 			i->setShot(true);
 			return;
 		}
@@ -56,7 +56,7 @@ void Gun::fire(sf::Vector2f nPos, float rot, float speed) {
 	float scale = 0.1; //will change to give actual scale later
 	Bullet bullet(nPos, scale, bound[0], bound[1], bulText);
 	bullet.setRot(rot);
-	bullet.setSpeed(-speed*sin(rot*M_PI/180), speed*cos(rot*M_PI/180));
+	bullet.setCurSpeed(-speed*sin(rot*M_PI/180), speed*cos(rot*M_PI/180));
 	bulVect.push_back(bullet);
 
 }

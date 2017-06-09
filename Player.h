@@ -7,12 +7,15 @@
 class Player : public Character{
 private:
 	Gun gun;
+	int score;
 public:
-	Player(float nxpos, float nypos, float nSpeed, float rSpeed, int xbound, int ybound, float scale, float nFireTime, sf::Texture &pTexture, sf::Texture &bTexture);
+	Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xbound, int ybound, float scale, float nFireTime, sf::Texture &pTexture, sf::Texture &bTexture);
 	Player(float nxpos, float nypos);
+	int getScore();
 	Gun &getGun();
 	void moveCheck();
 	void fireCheck(); 
+	void addScore(int addScore);
 	void main();
 };
 

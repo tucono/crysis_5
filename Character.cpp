@@ -8,9 +8,14 @@ void Character::setPos(sf::Vector2f nPos){ //set position of character
 	//pos = sf::Vector2f(nxpos, nypos);
 	Sprite.setPosition(nPos);
 }
-void Character::setSpeed(float xSpeed, float ySpeed){
-	speed.x = xSpeed;
-	speed.y = ySpeed;
+void Character::setCurSpeed(float xSpeed, float ySpeed) {
+	curSpeed = sf::Vector2f(xSpeed, ySpeed);
+}
+void Character::setMaxSpeed(float nMaxSpeed){
+	maxSpeed = nMaxSpeed;
+}
+void Character::setSpeedMod(float nSpeedMod) {
+	speedMod = nSpeedMod;
 }
 void Character::setRot(float rot) {
 	Sprite.setRotation(rot);
@@ -30,6 +35,15 @@ void Character::setScale(float xScale, float yScale){
 void Character::setSize(){
 	size[0] = Sprite.getGlobalBounds().width;
 	size[1] = Sprite.getGlobalBounds().height;
+}
+void Character::damage(int dmg) {
+	health -= dmg;
+}
+void Character::heal(int heal) {
+	health += heal;
+}
+int Character::getHealth() {
+	return health;
 }
 sf::Vector2f Character::getPos(){
 	return pos;

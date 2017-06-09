@@ -36,8 +36,7 @@ void Enemy::fireCheck() { //checks if entity can fire
 	}
 }
 void Enemy::randSpeed(){
-	speed.x = 0;
-	speed.y = (rand()%10 +1)*0.01f;
+	maxSpeed = (rand()%10 +1)*0.01f;
 }
 void Enemy::randPos(){
 	int lBound = bound[1];
@@ -48,7 +47,7 @@ void Enemy::randPos(){
 }
 void Enemy::main(){
 	boundBox = Sprite.getGlobalBounds();
-	Sprite.move(speed);
+	Sprite.move(sf::Vector2f(0, maxSpeed));
 	pos = Sprite.getPosition();
 	if (getPos().y + size[1] > bound[1])
 	{

@@ -11,7 +11,7 @@ Bullet::Bullet(sf::Vector2f nPos, float scale, int xBound, int yBound, sf::Textu
 	boundBox = Sprite.getGlobalBounds();
 	bound[0] = xBound;
 	bound[1] = yBound;
-	speed = sf::Vector2f(0,0);
+	curSpeed = sf::Vector2f(0,0);
 	shot = true;
 	fireTime = 0;//UNUSED UNLESS BULLET FIRES BULLETS(WHOAH)
 }
@@ -23,7 +23,7 @@ Bullet::Bullet(sf::Vector2f nPos, float scale){
 	size[0] = Sprite.getGlobalBounds().width;
 	size[1] = Sprite.getGlobalBounds().height;
 	boundBox = Sprite.getGlobalBounds();
-	speed = sf::Vector2f(0, 0);
+	curSpeed = sf::Vector2f(0, 0);
 }
 
 bool Bullet::getShot() {
@@ -36,7 +36,7 @@ void Bullet::setShot(bool status) {
 
 void Bullet::main(){
 	boundBox = Sprite.getGlobalBounds();
-	Sprite.move(speed);
+	Sprite.move(curSpeed);
 	pos = Sprite.getPosition();
 	//std::cout << getShot() << "\t" << pos.y << std::endl;
 	if (shot) {
@@ -44,7 +44,7 @@ void Bullet::main(){
 			//std::cout << "Bullet Pos: " << Sprite.getPosition().x << "," << Sprite.getPosition().y << std::endl;
 			//std::cout << "Bullet Reset" << std::endl;
 			setShot(false);
-			setSpeed(0, 0);
+			setCurSpeed(0, 0);
 			setPos(sf::Vector2f(-100, -100));
 		}
 	}

@@ -46,7 +46,7 @@ int main(){
 		enVector.push_back(enemy); //uses definition of vector<Enemy>
 		enVector[i].setPos(sf::Vector2f(i * 100, 0));
 	}*/
-	Player player(res[0]/2, res[1]-200, cfg.getConfig("plSpeed",0.2f), cfg.getConfig("plRotSpeed",0.2f), res[0], res[1], cfg.getConfig("plScale",0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
+	Player player(res[0]/2, res[1]-200, cfg.getConfig("plSpeed",0.2f), cfg.getConfig("plRotSpeed",0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale",0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
 	while (window.isOpen()){
 		sf::Event event;
 		while (window.pollEvent(event)){
@@ -55,6 +55,10 @@ int main(){
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))//exit game
 			window.close();
+		if (player.getHealth() <= 0) {
+			window.close();
+			std::cout << "YOU LOSE\n";
+		}
 
 		//Iterate through all element behaviors
 		background.main();
@@ -75,18 +79,30 @@ int main(){
 		}*/
 		for (std::vector<Enemy*>::size_type n = 0; n < enVector.size(); ++n) { //BREAKS DUE TO ERROR ABOVE
 			enVector[n]->main();
-			if (enVector[n]->getBoundBox().intersects(player.getBoundBox())) {
+			if (enVector[n]->getBoundBox().intersects(player.getBoundBox())) {//enemy hits player
 				enVector[n]->randPos();
+				player.damage(10);
+				std::cout << "You're hit! Your health is at: " << player.getHealth() << std::endl;
 			}
 			int index = 0;
 			for (std::vector<Bullet>::size_type k = 0; k < player.getGun().getBulVect().size(); ++k) {
 				if (enVector[n]->getBoundBox().intersects(player.getGun().getBulVect()[k].getBoundBox())) { //enemy intersects player bullet.
 					enVector[n]->randPos();
-					player.getGun().getBulVect()[index].setSpeed(0, 0);
+					player.getGun().getBulVect()[index].setCurSpeed(0, 0);
 					player.getGun().getBulVect()[index].setPos(sf::Vector2f(-100,-100));
 					player.getGun().getBulVect()[index].setShot(false);//set shot as unused
+					player.addScore(1);
 				}
 				++index;
+			}
+			for (std::vector<Bullet>::size_type j = 0; j < enVector[n]->getGun().getBulVect().size(); ++j) {
+				if (player.getBoundBox().intersects(enVector[n]->getGun().getBulVect()[j].getBoundBox())) {//player intersects enemy bullet
+					enVector[n]->getGun().getBulVect()[j].setCurSpeed(0, 0);
+					enVector[n]->getGun().getBulVect()[j].setPos(sf::Vector2f(-100, -100));
+					enVector[n]->getGun().getBulVect()[j].setShot(false);
+					player.damage(5);
+					std::cout << "You're hit! Your health is at: " << player.getHealth() << std::endl;
+				}
 			}
 			index = 0;
 			for (std::vector<Bullet>::size_type j = 0; j < enVector[n]->getGun().getBulVect().size(); ++j) { //iterate through enemy bullets
@@ -97,5 +113,8 @@ int main(){
 		}
 		window.display();
 	}
+	std::cout << "Thanks for playing! Your final score is: " << player.getScore() <<"\nEnter any key to quit...\n";
+	std::string x;
+	std::cin >> x;
 	return 0;
 }
