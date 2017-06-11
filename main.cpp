@@ -5,6 +5,7 @@
 #include "Background.h"
 #include "Config.h"
 #include "Bullet.h"
+#include "Level.h"
 #include <vector>
 
 int main(){
@@ -13,8 +14,17 @@ int main(){
 	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; // set resolution
 	srand(time(0)); //seed rand()
 	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");//create game window
+	Level level_0(&window, 3, res, fileLoc, 20);
+	Level level_1(&window, 4, res, fileLoc, 25);
+	if (!level_0.main()) {
+		return 0;
+	}
+	if (!level_1.main()) {
+		return 0;
+	}
+	std::cout << "You Win!" << std::endl;
 	//Load Textures (WILL BE MOVED TO A TEXTURE MANAGER)
-	sf::Texture bgText;
+	/*sf::Texture bgText;
 	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))){
 		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
 	}
@@ -46,8 +56,8 @@ int main(){
 		enVector.push_back(enemy); //uses definition of vector<Enemy>
 		enVector[i].setPos(sf::Vector2f(i * 100, 0));
 	}*/
-	Player player(res[0]/2, res[1]-200, cfg.getConfig("plSpeed",0.2f), cfg.getConfig("plRotSpeed",0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale",0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
-	while (window.isOpen()){
+	//Player player(res[0]/2, res[1]-200, cfg.getConfig("plSpeed",0.2f), cfg.getConfig("plRotSpeed",0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale",0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
+	/*while (window.isOpen()){
 		sf::Event event;
 		while (window.pollEvent(event)){
 			if (event.type == sf::Event::Closed)
@@ -74,9 +84,6 @@ int main(){
 			window.draw(player.getGun().getBulVect()[i].getSprite());
 		}
 		//window.draw(enemy.getSprite()); //draw enemy
-		/*for (std::vector<Bullet>::size_type n = 0; n < enemy.getGun().getBulVect().size(); ++n) { //draw enemy bullets
-			window.draw(enemy.getGun().getBulVect()[n].getSprite());
-		}*/
 		for (std::vector<Enemy*>::size_type n = 0; n < enVector.size(); ++n) { //BREAKS DUE TO ERROR ABOVE
 			enVector[n]->main();
 			if (enVector[n]->getBoundBox().intersects(player.getBoundBox())) {//enemy hits player
@@ -112,8 +119,8 @@ int main(){
 			window.draw(enVector[n]->getSprite());//draw Enemies
 		}
 		window.display();
-	}
-	std::cout << "Thanks for playing! Your final score is: " << player.getScore() <<"\nEnter any key to quit...\n";
+	}*/
+	//std::cout << "Thanks for playing! Your final score is: " << player.getScore() <<"\nEnter any key to quit...\n";
 	std::string x;
 	std::cin >> x;
 	return 0;
