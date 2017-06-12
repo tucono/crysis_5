@@ -6,23 +6,36 @@
 #include "Config.h"
 #include "Bullet.h"
 #include "Level.h"
+#include "TextureManager.h"
 #include <vector>
 
 int main(){
-	std::string fileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/";//Texture File Location
-	Config cfg("C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt");//Create config file
+	std::string textFileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/";//Texture File Location
+	std::string cfgFileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt";
+	Config cfg(cfgFileLoc);//Create config file
+	TextureManager textMan(&cfg, textFileLoc);
 	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; // set resolution
 	srand(time(0)); //seed rand()
 	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");//create game window
-	Level level_0(&window, 3, res, fileLoc, 20);
-	Level level_1(&window, 4, res, fileLoc, 25);
+	std::string l1Textures[4] = { "bg_01", "player_01", "enemy_01", "bul_01" };
+	Level level_0(&window, 3, res, 20, &textMan, l1Textures);
+	Level level_1(&window, 4, res, 25, &textMan, l1Textures);
 	if (!level_0.main()) {
+		std::cout << "YOU LOSE!\n";
+		window.close();
+		std::string x;
+		std::cin >> x;
 		return 0;
 	}
 	if (!level_1.main()) {
+		std::cout << "YOU LOSE!\n";
+		window.close();
+		std::string x;
+		std::cin >> x;
 		return 0;
 	}
-	std::cout << "You Win!" << std::endl;
+	std::cout << "Congrats, you beat the game!" << std::endl;
+	window.close();
 	//Load Textures (WILL BE MOVED TO A TEXTURE MANAGER)
 	/*sf::Texture bgText;
 	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))){

@@ -5,6 +5,7 @@ enTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crys
 plTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/playerChar.png
 bulTextureLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png
 bulTextLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png
+erTextLoc = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/Error.png
 enScale = 1.0
 enFireTime_inMS = 1000
 plScale = 1.0

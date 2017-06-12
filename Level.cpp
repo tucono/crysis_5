@@ -1,9 +1,14 @@
 #include "Level.h"
 #include <iostream>
 
-Level::Level(sf::RenderWindow *nWindow, int enNum, int res[2], std::string fileLoc, int nMaxPoints) {
+Level::Level(sf::RenderWindow *nWindow, int enNum, int res[2], int nMaxPoints, TextureManager *nTextMan, std::string textures[4]) {
 	// Load textures (WILL BE DONE WITH TEXTURE MANAGER
-	if (!plTexture.loadFromFile(cfg.getConfig("plTextureLoc", fileLoc + "playerChar.png"))) {
+	textMan = nTextMan;
+	bgTexture = textMan->getTexture(textures[0]);
+	plTexture = textMan->getTexture(textures[1]);
+	enTexture = textMan->getTexture(textures[2]);
+	bulTexture = textMan->getTexture(textures[3]);
+	/*if (!plTexture.loadFromFile(cfg.getConfig("plTextureLoc", fileLoc + "playerChar.png"))) {
 		std::cout << "ERROR IN PLAYER TEXTURE LOADING\n";
 	}
 	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))) {
@@ -14,9 +19,9 @@ Level::Level(sf::RenderWindow *nWindow, int enNum, int res[2], std::string fileL
 	}
 	if (!bulTexture.loadFromFile(cfg.getConfig("bulTextureLoc", fileLoc + "laser.png"))) {
 		std::cout << "ERROR IN BULLET TEXTURE LOADING\n";
-	}
+	}*/
 	// Initialize player, enemies, and background
-	background = new Background(bgText, 0.1, 0, 0, res[1]);
+	background = new Background(bgTexture, 0.1, 0, 0, res[1]);
 	player = new Player(res[0] / 2, res[1] - 200, cfg.getConfig("plSpeed", 0.2f), cfg.getConfig("plRotSpeed", 0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale", 0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture);
 	for (int i = 0; i < enNum; ++i) {
 		enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500), enTexture, bulTexture));

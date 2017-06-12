@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-#include "SFML/Graphics.hpp"
+//#include "SFML/Graphics.hpp"
 #include "Gun.h"
 #include "Bullet.h"
 #include <string>
