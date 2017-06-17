@@ -13,7 +13,6 @@ Bullet::Bullet(sf::Vector2f nPos, float scale, int xBound, int yBound, sf::Textu
 	bound[1] = yBound;
 	curSpeed = sf::Vector2f(0,0);
 	shot = true;
-	fireTime = 0;//UNUSED UNLESS BULLET FIRES BULLETS(WHOAH)
 }
 
 Bullet::Bullet(sf::Vector2f nPos, float scale){

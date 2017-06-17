@@ -78,8 +78,8 @@ float Config::getConfig(std::string lookup, float defNum) { //overloaded for flo
 		configOut << "\n" << lookup << " = " << defNum;
 		configOut.close();
 		std::cout << "Config file output closed\n";
-		configIn.open(fileLoc);
-		std::cout << "Config file input opened\n";
+		//configIn.open(fileLoc);
+		//std::cout << "Config file input opened\n";
 		return defNum;
 	}
 	else{
@@ -116,8 +116,8 @@ int Config::getConfig(std::string lookup, int defNum) { //overloaded for int
 		configOut << "\n" << lookup << " = " << defNum;
 		configOut.close();
 		std::cout << "Config file output closed\n";
-		configIn.open(fileLoc);
-		std::cout << "Config file input opened\n";
+		//configIn.open(fileLoc);
+		//std::cout << "Config file input opened\n";
 		return defNum;
 	}
 	else {

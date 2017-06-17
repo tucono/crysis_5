@@ -6,16 +6,18 @@
 #include "Gun.h"
 class Player : public Character{
 private:
-	Gun gun;
+	//Gun gun;
 	int score;
 public:
 	Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xbound, int ybound, float scale, float nFireTime, sf::Texture &pTexture, sf::Texture &bTexture);
 	Player(float nxpos, float nypos);
 	int getScore();
-	Gun &getGun();
+	//Gun &getGun();
 	void moveCheck();
 	void fireCheck(); 
 	void addScore(int addScore);
+	//void setGunPulse(int nGunPulse);
+	//void setGunFireAngle(float nAngle);
 	void main();
 };
 

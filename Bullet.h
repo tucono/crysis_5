@@ -1,9 +1,9 @@
 #ifndef BULLET_h
 #define BULLET_h
 #include <SFML/Graphics.hpp>
-#include "Character.h"
+#include "Entity.h"
 
-class Bullet: public Character{
+class Bullet: public Entity{
 private:
 	bool shot;
 public:

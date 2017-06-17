@@ -18,14 +18,12 @@ Enemy::Enemy(int xBound, int yBound, float scale, float nFireTime, sf::Texture &
 	setSize();
 	gun.setTexture(bTexture);
 	gun.setBound(bound[0], bound[1]);
+	setGunPulse(1);//default
 }
 Enemy::Enemy(float nxpos, float nypos){
 	pos = sf::Vector2f(nxpos, nypos);
 	Sprite.setColor(sf::Color::Red);
 	Sprite.setPosition(pos);
-}
-Gun &Enemy::getGun() {
-	return gun;
 }
 /*Enemy& Enemy::operator=(const Enemy& other) {
 	gun = other.gun;
@@ -40,8 +38,8 @@ void Enemy::randSpeed(){
 }
 void Enemy::randPos(){
 	int lBound = bound[1];
-	int rBound = bound[0] - size[0];
-	float nPos = rand() % rBound;
+	int rBound = bound[0] - int(size[0]);
+	float nPos = float(rand() % rBound);
 	Sprite.setPosition(sf::Vector2f(nPos,0)); // still needs fix to always spawn in render window
 	randSpeed();//random speed with random position
 }
@@ -55,5 +53,5 @@ void Enemy::main(){
 		randSpeed();
 	}
 	fireCheck();
-	gun.main();
+	gun.main(0);
 }

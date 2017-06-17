@@ -21,9 +21,14 @@ private:
 	sf::Texture bgTexture;
 	sf::Texture enTexture; 
 	sf::Texture bulTexture;
+	sf::Clock levelClock;
+	sf::Clock enIncClock;
+	int res[2];
 	int maxPoints;
+	float maxTime;
+	int levType;
 public:
-	Level(sf::RenderWindow *nWindow, int enNum, int res[2], int nMaxPoints, TextureManager *nTextMan, std::string textures[4]);
+	Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3]);
 	~Level();
 	bool main();
 };

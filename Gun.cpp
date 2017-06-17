@@ -17,17 +17,9 @@ Gun::Gun() {
 	Bullet bullet(sf::Vector2f(0,0), 0, 0, 0, bulText);
 	bulVect.push_back(bullet);
 	sCase = 0;
+	nPulse = 1;//default
+	fireAngle = 0;//default
 }
-/*Gun& Gun::operator =(const Gun& other) {
-	cfg = other.cfg;
-	bulVect = other.bulVect;
-	bulText = other.bulText;
-	fireClock = other.fireClock;
-	dT = other.dT;
-	nBulPos = other.nBulPos;
-	nBulSpeed = other.nBulSpeed;
-	sCase = other.sCase;
-}*/
 std::vector<Bullet> &Gun::getBulVect(){
 	return bulVect;
 }
@@ -41,6 +33,12 @@ void Gun::setBound(int xBound, int yBound) {
 	bound[0] = xBound;
 	bound[1] = yBound;
 }
+void Gun::setN_Pulse(int newPulse) {
+	nPulse = newPulse;
+}
+void Gun::setFireAngle(float nAngle) {
+	fireAngle = nAngle;
+}
 void Gun::fire(sf::Vector2f nPos, float rot, float speed) {
 	//std::cout << "Bullet rotation: " << rot << std::endl;
 	//std::cout << "Bullet xSpeed: " << sin(rot) << "\tBullet ySpeed: " << cos(rot) << std::endl;
@@ -48,24 +46,54 @@ void Gun::fire(sf::Vector2f nPos, float rot, float speed) {
 		if (!i->getShot()) { //if unused found, use it and don't create a new one.
 			i->setPos(nPos);
 			i->setRot(rot);
-			i->setCurSpeed(-speed*sin(rot*M_PI / 180), speed*cos(rot*M_PI / 180));
+			i->setCurSpeed(-speed*float(sin(rot*M_PI / 180)), float(speed*cos(rot*M_PI / 180)));
 			i->setShot(true);
 			return;
 		}
 	}
-	float scale = 0.1; //will change to give actual scale later
+	float scale = 0.1f; //will change to give actual scale later
 	Bullet bullet(nPos, scale, bound[0], bound[1], bulText);
 	bullet.setRot(rot);
-	bullet.setCurSpeed(-speed*sin(rot*M_PI/180), speed*cos(rot*M_PI/180));
+	bullet.setCurSpeed(-speed*float(sin(rot*M_PI/180)), speed*float(cos(rot*M_PI/180)));
 	bulVect.push_back(bullet);
 
 }
-void Gun::fireCheck() {
+void Gun::pulseFire() {
 	switch (sCase) {
 	case 1:
 		fireClock.restart();//start timer from 0
+		//std::cout << "in pulseFire() - Pulse = " << nPulse << std::endl;
 		dT = fireClock.getElapsedTime();
-		fire(nBulPos, nBulRot, nBulSpeed);
+		for (int i = 0; i < nPulse; ++i) {
+			//std::cout << "Pulse Rot " << i << " = " << nBulRot + i * 360 / float(nPulse) << std::endl;
+			fire(nBulPos, nBulRot+i*360/float(nPulse), nBulSpeed);//will pulse radially from origin
+		}
+		++sCase;
+		break;
+	case 2:
+		dT = fireClock.getElapsedTime();
+		if (dT.asMilliseconds() > minFireTime) { //wait 1/2 second
+			sCase = 0; //wait until fireCheck is called again
+		}
+		break;
+	default:
+		fireClock.restart();//prevents fireClock from continously building as game progresses
+		sCase = 0;//keep sCase 0 unless firing
+		break;
+	}
+}
+
+void Gun::pulseAngleFire() {
+	float startAngle = nBulRot - fireAngle / 2;//First angle that bullet will be shot at
+	switch (sCase) {
+	case 1:
+		fireClock.restart();//start timer from 0
+		//std::cout << "in pulseAngleFire() - Pulse = " << nPulse << std::endl;
+		dT = fireClock.getElapsedTime();
+		for (int i = 0; i < nPulse; ++i) {
+			//std::cout << "Pulse Rot " << i << " = " << nBulRot + i * 360 / float(nPulse) << std::endl;
+			fire(nBulPos, startAngle + i * fireAngle / float(nPulse), nBulSpeed);//will pulse radially from origin
+		}
 		++sCase;
 		break;
 	case 2:
@@ -87,9 +115,20 @@ void Gun::fireCheck(sf::Vector2f nPos, float nRot, float nSpeed, float nMinFireT
 	minFireTime = nMinFireTime;
 	sCase = 1;
 }
-void Gun::main() {
+void Gun::main(int gunType) {
 	for (std::vector<Bullet>::iterator i = bulVect.begin(); i != bulVect.end(); i++) {//loop through all bullets
 		i->main();
 	}
-	fireCheck();
+	switch (gunType) {
+	case 0: //pulse. nPulse determines number of shots, equidistant radial from character.
+		pulseFire();
+		break;
+	case 1://pulse. nPulse determines number of shots, angle determines spread
+		pulseAngleFire();
+		break;
+	default:
+		setN_Pulse(1);//constant stream of pulse of 1
+		pulseFire();
+		break;
+	}
 }

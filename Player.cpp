@@ -26,6 +26,8 @@ Player::Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpee
 	//speedMod = 0.0001;
 	speedMod = nSpeedMod;
 	score = 0;
+	setGunPulse(1);//default gun pulse of 1
+	gun.setFireAngle(0);//default fireAngle
 }
 Player::Player(float nxpos, float nypos){ //Testing constructor
 	pos = sf::Vector2f(nxpos, nypos);
@@ -70,23 +72,23 @@ void Player::moveCheck() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) { //accelerate player forward
 		if (abs(sqrt(curSpeed.x*curSpeed.x + curSpeed.y*curSpeed.y)) < maxSpeed) {
 			//std::cout << "Player up increasing. CurSpeed: " << curSpeed.x << " " << curSpeed.y << std::endl;
-			setCurSpeed(curSpeed.x + speedMod*sin(Sprite.getRotation()*M_PI / 180), curSpeed.y - speedMod*cos(Sprite.getRotation()*M_PI / 180));
+			setCurSpeed(curSpeed.x + speedMod*float(sin(Sprite.getRotation()*M_PI / 180)), curSpeed.y - speedMod*float(cos(Sprite.getRotation()*M_PI / 180)));
 		}
 		else
 		{
 			//std::cout << "Player up max. CurSpeed: " << curSpeed.x << " " << curSpeed.y << std::endl;
-			setCurSpeed(maxSpeed*sin(Sprite.getRotation()*M_PI / 180), -maxSpeed*cos(Sprite.getRotation()*M_PI / 180));
+			setCurSpeed(maxSpeed*float(sin(Sprite.getRotation()*M_PI / 180)), -maxSpeed*float(cos(Sprite.getRotation()*M_PI / 180)));
 		}
 		//curSpeed.x = maxSpeed*sin(Sprite.getRotation()*M_PI / 180);
 		//curSpeed.y = -maxSpeed*cos(Sprite.getRotation()*M_PI / 180);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) { //accelerate player backward
 		if (abs(sqrt(curSpeed.x*curSpeed.x + curSpeed.y*curSpeed.y)) < maxSpeed) {
-			setCurSpeed(curSpeed.x - speedMod*sin(Sprite.getRotation()*M_PI / 180), curSpeed.y + speedMod*cos(Sprite.getRotation()*M_PI / 180));
+			setCurSpeed(curSpeed.x - speedMod*float(sin(Sprite.getRotation()*M_PI / 180)), curSpeed.y + speedMod*float(cos(Sprite.getRotation()*M_PI / 180)));
 		}
 		else
 		{
-			setCurSpeed(-maxSpeed*sin(Sprite.getRotation()*M_PI / 180), maxSpeed*cos(Sprite.getRotation()*M_PI / 180));
+			setCurSpeed(-maxSpeed*float(sin(Sprite.getRotation()*M_PI / 180)), maxSpeed*float(cos(Sprite.getRotation()*M_PI / 180)));
 		}
 		//setCurSpeed(-maxSpeed*sin(Sprite.getRotation()*M_PI / 180), maxSpeed*cos(Sprite.getRotation()*M_PI / 180));
 		//curSpeed.x = -maxSpeed*sin(Sprite.getRotation()*M_PI / 180);
@@ -108,7 +110,7 @@ void Player::moveCheck() {
 	}
 	if (Sprite.getPosition().y > bound[1]) {//too high
 		setCurSpeed(curSpeed.x, 0);
-		Sprite.setPosition(Sprite.getPosition().x, bound[1]);
+		Sprite.setPosition(Sprite.getPosition().x, float(bound[1]));
 	}
 	else if (Sprite.getPosition().y < 0) {//too low
 		setCurSpeed(curSpeed.x, 0);
@@ -117,7 +119,7 @@ void Player::moveCheck() {
 	if (Sprite.getPosition().x > bound[0] ) {//too far right
 		setCurSpeed(0, curSpeed.y);
 		//move[0] = 0;
-		Sprite.setPosition(bound[0], Sprite.getPosition().y);
+		Sprite.setPosition(float(bound[0]), Sprite.getPosition().y);
 	}
 	else if (Sprite.getPosition().x < 0) {//too far left
 		setCurSpeed(0, curSpeed.y);
@@ -136,13 +138,10 @@ void Player::fireCheck(){
 void Player::addScore(int addScore) {
 	score += addScore;
 }
-Gun &Player::getGun(){
-	return gun;
-}
 void Player::main(){
 	boundBox = Sprite.getGlobalBounds();
 	pos = Sprite.getPosition();
 	moveCheck();
 	fireCheck();
-	gun.main();
+	gun.main(1);
 }

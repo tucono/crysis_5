@@ -1,38 +1,30 @@
 #include "Level.h"
 #include <iostream>
 
-Level::Level(sf::RenderWindow *nWindow, int enNum, int res[2], int nMaxPoints, TextureManager *nTextMan, std::string textures[4]) {
-	// Load textures (WILL BE DONE WITH TEXTURE MANAGER
+Level::Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3]) {
+	//Set boundary through resolution
+	res[0] = nRes[0];
+	res[1] = nRes[1];
+	// Load textures
 	textMan = nTextMan;
 	bgTexture = textMan->getTexture(textures[0]);
-	plTexture = textMan->getTexture(textures[1]);
-	enTexture = textMan->getTexture(textures[2]);
-	bulTexture = textMan->getTexture(textures[3]);
-	/*if (!plTexture.loadFromFile(cfg.getConfig("plTextureLoc", fileLoc + "playerChar.png"))) {
-		std::cout << "ERROR IN PLAYER TEXTURE LOADING\n";
-	}
-	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))) {
-		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
-	}
-	if (!enTexture.loadFromFile(cfg.getConfig("enTextureLoc", fileLoc + "koreaEnemy.png"))) {
-		std::cout << "ERROR IN ENEMY TEXTURE LOADING\n";
-	}
-	if (!bulTexture.loadFromFile(cfg.getConfig("bulTextureLoc", fileLoc + "laser.png"))) {
-		std::cout << "ERROR IN BULLET TEXTURE LOADING\n";
-	}*/
+	enTexture = textMan->getTexture(textures[1]);
+	bulTexture = textMan->getTexture(textures[2]);
 	// Initialize player, enemies, and background
-	background = new Background(bgTexture, 0.1, 0, 0, res[1]);
-	player = new Player(res[0] / 2, res[1] - 200, cfg.getConfig("plSpeed", 0.2f), cfg.getConfig("plRotSpeed", 0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale", 0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture);
+	background = new Background(bgTexture, 0.1f, 0, 0, float(res[1]));
+	player = nPlayer;
 	for (int i = 0; i < enNum; ++i) {
-		enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500), enTexture, bulTexture));
+		enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500.0f), enTexture, bulTexture));
 	}
 	//Setup render window
 	window = nWindow;
+	//Set level win conditions
 	maxPoints = nMaxPoints;
+	maxTime = nMaxTime;
 }
 Level::~Level() {
 	//Remove references;
-	delete player;
+	//delete player;
 	delete background;
 	for (std::vector<Enemy*>::size_type n = 0; n < enVector.size(); ++n) {
 		delete enVector[n];
@@ -40,6 +32,9 @@ Level::~Level() {
 	}
 }
 bool Level::main() {
+	levelClock.restart();
+	float dT;
+	int enIncCase = 0;
 	while (window->isOpen()) {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -55,11 +50,51 @@ bool Level::main() {
 			std::cout << "YOU LOSE\n";
 			return 0;
 		}
-		if (player->getScore() > maxPoints) { //points needed to go to next level
-			std::cout << "You Win!\n";
-			return 1;
+		//Level Types
+		switch (levType) {
+		case 0: //Advance by points
+			if (player->getScore() > maxPoints) { //points needed to go to next level
+				std::cout << "You Win!\n";
+				return 1;
+			}
+			break;
+		case 1: //Advance by time
+			if (levelClock.getElapsedTime().asSeconds() >= maxTime) {
+				std::cout << "You Win!\n";
+				return 1;
+			}
+			break;
+		case 2: //Advance by time, enemies increase with time
+			if (levelClock.getElapsedTime().asSeconds() >= maxTime) {
+				std::cout << "You Win!\n";
+				return 1;
+			}
+			switch (enIncCase) {
+			case 0:
+				enIncClock.restart();
+				++enIncCase;
+				break;
+			case 1:
+				dT = enIncClock.getElapsedTime().asSeconds();
+				if (dT > 10) {
+					enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500.0f), enTexture, bulTexture));
+					enIncCase = 0;
+				}
+				break;
+			default:
+				enIncClock.restart();
+				break;
+			}
+			
+			break;
+		default: //Advance by points
+			if (player->getScore() > maxPoints) { //points needed to go to next level
+				std::cout << "You Win!\n";
+				return 1;
+			}
+			break;
 		}
-
+		
 		//Iterate through all element behaviors
 		background->main();
 		player->main();

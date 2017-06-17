@@ -12,5 +12,5 @@ plScale = 1.0
 plSpeed = 0.2
 plRotSpeed = 0.1
 plSpeed = 0.2
-plFireTime_inMS = 100
+plFireTime_inMS = 500
 plSpdMod = 4e-05

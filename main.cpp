@@ -9,131 +9,55 @@
 #include "TextureManager.h"
 #include <vector>
 
+int lose(sf::Window *window);
+
 int main(){
 	std::string textFileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/";//Texture File Location
-	std::string cfgFileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt";
-	Config cfg(cfgFileLoc);//Create config file
+	std::string cfgFileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Config.txt";//Config file location
+	//Create config file
+	Config cfg(cfgFileLoc);
+	//create texture manager
 	TextureManager textMan(&cfg, textFileLoc);
-	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; // set resolution
-	srand(time(0)); //seed rand()
-	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");//create game window
-	std::string l1Textures[4] = { "bg_01", "player_01", "enemy_01", "bul_01" };
-	Level level_0(&window, 3, res, 20, &textMan, l1Textures);
-	Level level_1(&window, 4, res, 25, &textMan, l1Textures);
-	if (!level_0.main()) {
-		std::cout << "YOU LOSE!\n";
-		window.close();
-		std::string x;
-		std::cin >> x;
-		return 0;
-	}
-	if (!level_1.main()) {
-		std::cout << "YOU LOSE!\n";
-		window.close();
-		std::string x;
-		std::cin >> x;
-		return 0;
+	// set resolution
+	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; 
+	//seed rand()
+	srand(unsigned int(time(0))); 
+	//create game window
+	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");
+	//Initialize player
+	sf::Texture plText = textMan.getTexture("player_01");
+	sf::Texture plBulText = textMan.getTexture("bul_01");
+	Player player(res[0] / 2, res[1] - 200, cfg.getConfig("plSpeed", 0.2f), cfg.getConfig("plRotSpeed", 0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale", 0.5f), 
+		cfg.getConfig("plFireTime_inMS", 500.0f), plText, plBulText);
+	//Initialize levels
+	std::string l1Textures[3] = { "bg_01", "enemy_01", "bul_01" };
+	std::vector<Level*> levels;
+	levels.push_back(new Level(&window, 3, res, 20, 0, 0, &player, &textMan, l1Textures));//get 20 points to advance
+	levels.push_back(new Level(&window, 4, res, 30, 0, 1, &player, &textMan, l1Textures));//survive 30 seconds to advance
+	levels.push_back(new Level(&window, 4, res, 60, 0, 2, &player, &textMan, l1Textures));//survive 60 seconds to advance
+	/*Level level_0(&window, 3, res, 20, 0, &player, &textMan, l1Textures);//get 20 points to advance
+	Level level_1(&window, 4, res, 0, 30, &player, &textMan, l1Textures);//survive 30 seconds to advance
+	Level level_2(&window, 4, res, 0, 60, &player, &textMan, l1Textures);//survive 60 seconds to advance*/
+	for (std::vector<Level*>::size_type i = 0; i < levels.size(); ++i) {
+		if (!levels[i]->main()) {
+			return lose(&window);
+		}
 	}
 	std::cout << "Congrats, you beat the game!" << std::endl;
+	//Cleanup levels
+	for (std::vector<Level*>::size_type i = 0; i < levels.size(); ++i) {
+		delete levels[i];
+	}
 	window.close();
-	//Load Textures (WILL BE MOVED TO A TEXTURE MANAGER)
-	/*sf::Texture bgText;
-	if (!bgText.loadFromFile(cfg.getConfig("bgTextureLoc", fileLoc + "Space.png"))){
-		std::cout << "ERROR IN SPACE TEXTURE LOADING\n";
-	}
-	Background background(bgText, 0.1, 0, 0, res[1]);
-	sf::Texture enTexture; //85 x 107
-	if (!enTexture.loadFromFile(cfg.getConfig("enTextureLoc",fileLoc + "koreaEnemy.png"))) {
-		std::cout << "ERROR IN ENEMY TEXTURE LOADING\n";
-	}
-	sf::Texture plTexture; //78 x 108
-	if (!plTexture.loadFromFile(cfg.getConfig("plTextureLoc",fileLoc + "playerChar.png"))) {
-		std::cout << "ERROR IN PLAYER TEXTURE LOADING\n";
-	}
-	sf::Texture bulTexture;
-	if (!bulTexture.loadFromFile(cfg.getConfig("bulTextureLoc", fileLoc + "laser.png"))) {
-		std::cout << "ERROR IN BULLET TEXTURE LOADING\n";
-	}
-	//Generate entities
-	std::vector<Enemy*> enVector;
-	for (int i = 0; i < 3; i++) {
-		enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500), enTexture, bulTexture));
-	}
-	/*Enemy enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), enTexture, bulTexture); //creating enemy [TESTING ONLY, NEEDS TO GO IN VECTOR]
-	enemy.setPos(sf::Vector2f(1 * 100, 0));
-	std::vector<Enemy*> enVector;
-	enVector.push_back(&enemy);//Works, need to find solution where I can create enemies in a for loop
-	//BROKEN: ATTEMPTING TO REFERENCE DELETED FUNCTION
-	for (int i = 0; i < 3; i++){ //generate enemies with multiple positions + speed
-		Enemy enemy(res[0] ,res[1], cfg.getConfig("enScale",0.5f) , enTexture, bulTexture); //create new enemy
-		enVector.push_back(enemy); //uses definition of vector<Enemy>
-		enVector[i].setPos(sf::Vector2f(i * 100, 0));
-	}*/
-	//Player player(res[0]/2, res[1]-200, cfg.getConfig("plSpeed",0.2f), cfg.getConfig("plRotSpeed",0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale",0.5f), cfg.getConfig("plFireTime_inMS", 500), plTexture, bulTexture); //xpos, ypos, speed, xbound, ybound, scale, texture
-	/*while (window.isOpen()){
-		sf::Event event;
-		while (window.pollEvent(event)){
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))//exit game
-			window.close();
-		if (player.getHealth() <= 0) {
-			window.close();
-			std::cout << "YOU LOSE\n";
-		}
+	//TEMPORARY: keeps command window from closing after game window closes for bugfixing
+	std::string x;
+	std::cin >> x;
+	return 0;
+}
 
-		//Iterate through all element behaviors
-		background.main();
-		//enemy.main();
-		player.main();
-		window.clear();
-
-		//draw all elements here
-		window.draw(background.getSprite(0));
-		window.draw(background.getSprite(1));
-		window.draw(player.getSprite()); //draw Player	 
-		for (std::vector<Bullet>::size_type i = 0; i < player.getGun().getBulVect().size(); ++i) { //draw player bullets
-			window.draw(player.getGun().getBulVect()[i].getSprite());
-		}
-		//window.draw(enemy.getSprite()); //draw enemy
-		for (std::vector<Enemy*>::size_type n = 0; n < enVector.size(); ++n) { //BREAKS DUE TO ERROR ABOVE
-			enVector[n]->main();
-			if (enVector[n]->getBoundBox().intersects(player.getBoundBox())) {//enemy hits player
-				enVector[n]->randPos();
-				player.damage(10);
-				std::cout << "You're hit! Your health is at: " << player.getHealth() << std::endl;
-			}
-			int index = 0;
-			for (std::vector<Bullet>::size_type k = 0; k < player.getGun().getBulVect().size(); ++k) {
-				if (enVector[n]->getBoundBox().intersects(player.getGun().getBulVect()[k].getBoundBox())) { //enemy intersects player bullet.
-					enVector[n]->randPos();
-					player.getGun().getBulVect()[index].setCurSpeed(0, 0);
-					player.getGun().getBulVect()[index].setPos(sf::Vector2f(-100,-100));
-					player.getGun().getBulVect()[index].setShot(false);//set shot as unused
-					player.addScore(1);
-				}
-				++index;
-			}
-			for (std::vector<Bullet>::size_type j = 0; j < enVector[n]->getGun().getBulVect().size(); ++j) {
-				if (player.getBoundBox().intersects(enVector[n]->getGun().getBulVect()[j].getBoundBox())) {//player intersects enemy bullet
-					enVector[n]->getGun().getBulVect()[j].setCurSpeed(0, 0);
-					enVector[n]->getGun().getBulVect()[j].setPos(sf::Vector2f(-100, -100));
-					enVector[n]->getGun().getBulVect()[j].setShot(false);
-					player.damage(5);
-					std::cout << "You're hit! Your health is at: " << player.getHealth() << std::endl;
-				}
-			}
-			index = 0;
-			for (std::vector<Bullet>::size_type j = 0; j < enVector[n]->getGun().getBulVect().size(); ++j) { //iterate through enemy bullets
-				window.draw(enVector[n]->getGun().getBulVect()[index].getSprite());
-				++index;
-			}
-			window.draw(enVector[n]->getSprite());//draw Enemies
-		}
-		window.display();
-	}*/
-	//std::cout << "Thanks for playing! Your final score is: " << player.getScore() <<"\nEnter any key to quit...\n";
+int lose(sf::Window *window) {
+	std::cout << "YOU LOSE!\n";
+	window->close();
 	std::string x;
 	std::cin >> x;
 	return 0;
