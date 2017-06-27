@@ -6,7 +6,7 @@
 
 Config::Config()
 {
-	fileLoc = "C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt";
+	fileLoc = "/home/philip-thomas/Documents/CodeBlocks/Projects/Crysis_5/Assets/Config.txt";
 }
 Config::Config(std::string nFileLoc) {
 	fileLoc = nFileLoc; //set config file location
@@ -57,7 +57,7 @@ float Config::getConfig(std::string lookup, float defNum) { //overloaded for flo
 	std::string info;
 	float num;
 	configIn.open(fileLoc);
-	if (configIn.is_open()){ 
+	if (configIn.is_open()){
 		std::cout << "File opened. Looking for " << lookup << std::endl;
 		while (getline(configIn, line)) {
 			if (line.find(lookup) != std::string::npos) { //Found lookup (lookup starts at char 0)

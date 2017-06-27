@@ -19,15 +19,15 @@ int main(){
 	//create texture manager
 	TextureManager textMan(&cfg, textFileLoc);
 	// set resolution
-	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)}; 
+	int res[2] = { cfg.getConfig("xres",1000), cfg.getConfig("yres",800)};
 	//seed rand()
-	srand(unsigned int(time(0))); 
+	srand( int(time(0)));
 	//create game window
 	sf::RenderWindow window(sf::VideoMode(res[0], res[1]), "SFML works!");
 	//Initialize player
 	sf::Texture plText = textMan.getTexture("player_01");
 	sf::Texture plBulText = textMan.getTexture("bul_01");
-	Player player(res[0] / 2, res[1] - 200, cfg.getConfig("plSpeed", 0.2f), cfg.getConfig("plRotSpeed", 0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale", 0.5f), 
+	Player player(res[0] / 2, res[1] - 200, cfg.getConfig("plSpeed", 0.2f), cfg.getConfig("plRotSpeed", 0.2f), cfg.getConfig("plSpdMod", 0.00001f), res[0], res[1], cfg.getConfig("plScale", 0.5f),
 		cfg.getConfig("plFireTime_inMS", 500.0f), plText, plBulText);
 	//Initialize levels
 	std::string l1Textures[3] = { "bg_01", "enemy_01", "bul_01" };
