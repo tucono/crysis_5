@@ -11,7 +11,7 @@ Gun::Gun(int nGunType, Config *nCfg) {
 	cfg = nCfg;
 	gunType = nGunType;
 	sf::Texture nText;
-	if (!nText.loadFromFile(cfg->getConfig("bulTextLoc", "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png"))) {//need to replace with variable storing default fileloc
+	if (!nText.loadFromFile(cfg->getConfig("bulTextLoc", "Assets/Textures/laser.png"))) {//need to replace with variable storing default fileloc
 		std::cout << "ERROR LOADING BULLET TEXTURE\n";
 	}
 	bulText = nText;

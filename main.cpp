@@ -13,8 +13,8 @@
 int lose(sf::Window *window);
 
 int main() {
-	std::string textFileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/";//Texture File Location
-	std::string cfgFileLoc = "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Config.txt";//Config file location
+	std::string textFileLoc = "Assets/Textures/";//Texture File Location
+	std::string cfgFileLoc = "Assets/Config.txt";//Config file location
 	//Create config file
 	Config cfg(cfgFileLoc);
 	//create texture manager
