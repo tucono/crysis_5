@@ -9,8 +9,8 @@ private:
 	//Gun gun;
 	int score;
 public:
-	Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xbound, int ybound, float scale, float nFireTime, sf::Texture &pTexture, sf::Texture &bTexture);
-	Player(float nxpos, float nypos);
+	Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xbound, int ybound, float scale, float nFireTime, int nGunType, sf::Texture &pTexture, sf::Texture &bTexture, Config *cfg);
+	~Player();
 	int getScore();
 	//Gun &getGun();
 	void moveCheck();

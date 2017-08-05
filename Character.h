@@ -5,8 +5,9 @@
 #include "Gun.h"
 class Character : public Entity{
 protected:
-	Gun gun;
-	int health; //stores health of character [CURRENTLY UNUSED]
+	Config *cfg;
+	Gun *gun;
+	float health; //stores health of character 
 	float fireTime;
 	int gunType; //Used for determining what guntype a character has
 public:
@@ -16,7 +17,7 @@ public:
 	void setGunFireAngle(float nAngle);
 	void damage(int dmg);
 	void heal(int heal);
-	int getHealth();
+	float getHealth();
 	virtual void main();
 };
 

@@ -9,9 +9,10 @@ class TextureManager {
 private:
 	Config *cfg;
 	std::map<std::string, sf::Texture> textMap;
+	std::string textFileLoc;
 	const std::string errorText = "error";
 public:
-	TextureManager(Config *nConfig, std::string textFileLoc);
+	TextureManager(Config *nConfig, std::string nTextFileLoc);
 	sf::Texture getTexture(std::string lookup);
 };
 

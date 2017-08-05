@@ -6,9 +6,9 @@
 //#include <thread>
 #include "Player.h"
 
-Player::Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xBound, int yBound, float scale, float nFireTime, sf::Texture &pTexture, sf::Texture &bTexture){
-	pos = sf::Vector2f(nxpos, nypos);
-	Sprite.setPosition(pos);//set initial position
+Player::Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpeedMod, int xBound, int yBound, float scale, float nFireTime, int nGunType, sf::Texture &pTexture, sf::Texture &bTexture, Config *nCfg){
+	//pos = sf::Vector2f(nxpos, nypos);
+	Sprite.setPosition(sf::Vector2f(nxpos, nypos));//set initial position
 	bound[0] = xBound;//set movement boundary in x
 	bound[1] = yBound;//set movement boundary in y
 	Sprite.setTexture(pTexture);
@@ -17,9 +17,10 @@ Player::Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpee
 	setMaxSpeed(nSpeed);
 	setCurSpeed(0, 0);
 	setRotSpeed(rSpeed);
-	setSize();//initialize size[] [only once if size doesn't change]
-	gun.setTexture(bTexture);//set bullet textures [WILL BE DONE WITH TEXTURE MANAGER]
-	gun.setBound(bound[0], bound[1]);
+	//setSize();//initialize size[] [only once if size doesn't change]
+	gun = new Gun(nGunType, nCfg);
+	gun->setTexture(bTexture);//set bullet textures [WILL BE DONE WITH TEXTURE MANAGER]
+	gun->setBound(bound[0], bound[1]);
 	Sprite.setOrigin(size[0] / 2, size[1] / 2);
 	fireTime = nFireTime;
 	health = 100;
@@ -27,12 +28,10 @@ Player::Player(float nxpos, float nypos, float nSpeed, float rSpeed, float nSpee
 	speedMod = nSpeedMod;
 	score = 0;
 	setGunPulse(1);//default gun pulse of 1
-	gun.setFireAngle(0);//default fireAngle
+	gun->setFireAngle(0);//default fireAngle
 }
-Player::Player(float nxpos, float nypos){ //Testing constructor
-	pos = sf::Vector2f(nxpos, nypos);
-	Sprite.setColor(sf::Color::Red);
-	Sprite.setPosition(pos);
+Player::~Player() {
+	delete gun;
 }
 int Player::getScore() {
 	return score;
@@ -129,9 +128,9 @@ void Player::moveCheck() {
 	Sprite.move(curSpeed);
 }
 void Player::fireCheck(){
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && gun.getFireCase() == 0) {//only run if spacebar is pressed and 1s have passed since last shot
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && gun->getFireCase() == 0) {//only run if spacebar is pressed and 1s have passed since last shot
 		//std::cout << "Player rotation: " << Sprite.getRotation() << std::endl;
-		gun.fireCheck(Sprite.getPosition(), Sprite.getRotation(), -1, fireTime);
+		gun->fireCheck(Sprite.getPosition(), Sprite.getRotation(), -1, fireTime);
 
 	}
 }
@@ -140,8 +139,8 @@ void Player::addScore(int addScore) {
 }
 void Player::main(){
 	boundBox = Sprite.getGlobalBounds();
-	pos = Sprite.getPosition();
+	//pos = Sprite.getPosition();
 	moveCheck();
 	fireCheck();
-	gun.main(1);
+	gun->main();
 }

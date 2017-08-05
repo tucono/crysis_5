@@ -11,7 +11,7 @@
 
 class Level {
 private:
-	Config cfg;
+	Config *cfg;
 	TextureManager *textMan;
 	sf::RenderWindow *window;
 	Background *background;
@@ -28,7 +28,7 @@ private:
 	float maxTime;
 	int levType;
 public:
-	Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3]);
+	Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3], Config *nCfg);
 	~Level();
 	bool main();
 };

@@ -14,3 +14,6 @@ plRotSpeed = 0.1
 plSpeed = 0.2
 plFireTime_inMS = 500
 plSpdMod = 4e-05
+
+butHovTextureLoc_01 = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/butHover_01.png
+butOnTextureLoc_01 = C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/butOn_01.png

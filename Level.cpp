@@ -1,11 +1,12 @@
 #include "Level.h"
 #include <iostream>
 
-Level::Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3]) {
+Level::Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, float nMaxTime, int levType, Player *nPlayer, TextureManager *nTextMan, std::string textures[3], Config *nCfg) {
 	//Set boundary through resolution
 	res[0] = nRes[0];
 	res[1] = nRes[1];
 	// Load textures
+	cfg = nCfg;
 	textMan = nTextMan;
 	bgTexture = textMan->getTexture(textures[0]);
 	enTexture = textMan->getTexture(textures[1]);
@@ -14,7 +15,7 @@ Level::Level(sf::RenderWindow *nWindow, int enNum, int nRes[2], int nMaxPoints, 
 	background = new Background(bgTexture, 0.1f, 0, 0, float(res[1]));
 	player = nPlayer;
 	for (int i = 0; i < enNum; ++i) {
-		enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500.0f), enTexture, bulTexture));
+		enVector.push_back(new Enemy(res[0], res[1], cfg->getConfig("enScale", 0.5f), cfg->getConfig("enFireTime_inMS", 500.0f), 0, enTexture, bulTexture, cfg));
 	}
 	//Setup render window
 	window = nWindow;
@@ -35,8 +36,8 @@ bool Level::main() {
 	levelClock.restart();
 	float dT;
 	int enIncCase = 0;
+	sf::Event event;
 	while (window->isOpen()) {
-		sf::Event event;
 		while (window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				window->close();
@@ -77,7 +78,7 @@ bool Level::main() {
 			case 1:
 				dT = enIncClock.getElapsedTime().asSeconds();
 				if (dT > 10) {
-					enVector.push_back(new Enemy(res[0], res[1], cfg.getConfig("enScale", 0.5f), cfg.getConfig("enFireTime_inMS", 500.0f), enTexture, bulTexture));
+					enVector.push_back(new Enemy(res[0], res[1], cfg->getConfig("enScale", 0.5f), cfg->getConfig("enFireTime_inMS", 500.0f), 0, enTexture, bulTexture, cfg));
 					enIncCase = 0;
 				}
 				break;

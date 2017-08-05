@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <ctime>
 
-Enemy::Enemy(int xBound, int yBound, float scale, float nFireTime, sf::Texture &nTexture, sf::Texture &bTexture){
+Enemy::Enemy(int xBound, int yBound, float scale, float nFireTime, int nGunType, sf::Texture &nTexture, sf::Texture &bTexture, Config *nCfg){
 	//pos = sf::Vector2f(nxpos, nypos);
 	bound[0] = xBound;
 	bound[1] = yBound;
@@ -15,22 +15,18 @@ Enemy::Enemy(int xBound, int yBound, float scale, float nFireTime, sf::Texture &
 	//setPos(pos[0], pos[1]);
 	randPos();
 	randSpeed();
-	setSize();
-	gun.setTexture(bTexture);
-	gun.setBound(bound[0], bound[1]);
+	//setSize();
+	gun = new Gun(nGunType, nCfg);
+	gun->setTexture(bTexture);
+	gun->setBound(bound[0], bound[1]);
 	setGunPulse(1);//default
 }
-Enemy::Enemy(float nxpos, float nypos){
-	pos = sf::Vector2f(nxpos, nypos);
-	Sprite.setColor(sf::Color::Red);
-	Sprite.setPosition(pos);
+Enemy::~Enemy() {
+	delete gun;
 }
-/*Enemy& Enemy::operator=(const Enemy& other) {
-	gun = other.gun;
-}*/
 void Enemy::fireCheck() { //checks if entity can fire
-	if (gun.getFireCase() == 0) {
-		gun.fireCheck(pos,0, 1, fireTime);//cts fire
+	if (gun->getFireCase() == 0) {
+		gun->fireCheck(getPos(),0, 1, fireTime);//cts fire
 	}
 }
 void Enemy::randSpeed(){
@@ -46,12 +42,12 @@ void Enemy::randPos(){
 void Enemy::main(){
 	boundBox = Sprite.getGlobalBounds();
 	Sprite.move(sf::Vector2f(0, maxSpeed));
-	pos = Sprite.getPosition();
+	//pos = Sprite.getPosition();
 	if (getPos().y + size[1] > bound[1])
 	{
 		randPos(); //reset it back to top
 		randSpeed();
 	}
 	fireCheck();
-	gun.main(0);
+	gun->main();
 }

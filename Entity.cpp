@@ -32,12 +32,12 @@ void Entity::setScale(float xScale, float yScale) {
 	scale.y = yScale;
 	Sprite.setScale(scale);
 }
-void Entity::setSize() {
+/*void Entity::setSize() {
 	size[0] = Sprite.getGlobalBounds().width;
 	size[1] = Sprite.getGlobalBounds().height;
-}
+}*/
 sf::Vector2f Entity::getPos() {
-	return pos;
+	return Sprite.getPosition();
 }
 sf::Sprite Entity::getSprite() {
 	return Sprite;
@@ -46,9 +46,11 @@ sf::FloatRect Entity::getBoundBox() {
 	return boundBox;
 }
 float* Entity::getSize() {
+	size[0] = Sprite.getGlobalBounds().width;
+	size[1] = Sprite.getGlobalBounds().height;
 	return size;
 }
 sf::Vector2f Entity::getScale() {
-	return scale;
+	return Sprite.getScale();
 }
 void Entity::main() {}

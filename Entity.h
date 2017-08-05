@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 class Entity {
 protected:
-	sf::Vector2f pos;
+	//sf::Vector2f pos;
 	sf::Vector2f scale;
 	sf::Vector2f curSpeed;
 	sf::Sprite Sprite; //Sprite that does all the work
@@ -25,7 +25,7 @@ public:
 	void setRot(float rot);
 	void setRotSpeed(float speed);
 	void setScale(float xScale, float yScale);
-	void setSize(); //may change to int from sf::Vector2f as Sprite doesn't use size
+	//void setSize(); //may change to int from sf::Vector2f as Sprite doesn't use size
 	sf::Vector2f getPos();
 	sf::Sprite getSprite();
 	sf::FloatRect getBoundBox();

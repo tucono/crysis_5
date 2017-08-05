@@ -36,7 +36,7 @@ void Bullet::setShot(bool status) {
 void Bullet::main(){
 	boundBox = Sprite.getGlobalBounds();
 	Sprite.move(curSpeed);
-	pos = Sprite.getPosition();
+	//pos = Sprite.getPosition();
 	//std::cout << getShot() << "\t" << pos.y << std::endl;
 	if (shot) {
 		if (getPos().y < 0 || getPos().y > bound[1]+size[1] || getPos().x < 0 || getPos().x > bound[0]) { //check if out of bounds

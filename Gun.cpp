@@ -7,10 +7,11 @@
 #include <iostream>
 #include <cmath>
 
-Gun::Gun() {
-	cfg = Config("C:\\Users\\Philip Thomas\\Documents\\Visual Studio 2015\\Projects\\Crysis_5\\Crysis_5\\Assets\\Config.txt");
+Gun::Gun(int nGunType, Config *nCfg) {
+	cfg = nCfg;
+	gunType = nGunType;
 	sf::Texture nText;
-	if (!nText.loadFromFile(cfg.getConfig("bulTextLoc", "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png"))) {//need to replace with variable storing default fileloc
+	if (!nText.loadFromFile(cfg->getConfig("bulTextLoc", "C:/Users/Philip Thomas/Documents/Visual Studio 2015/Projects/Crysis_5/Crysis_5/Assets/Textures/laser.png"))) {//need to replace with variable storing default fileloc
 		std::cout << "ERROR LOADING BULLET TEXTURE\n";
 	}
 	bulText = nText;
@@ -19,6 +20,7 @@ Gun::Gun() {
 	sCase = 0;
 	nPulse = 1;//default
 	fireAngle = 0;//default
+	damage = 0;//default
 }
 std::vector<Bullet> &Gun::getBulVect(){
 	return bulVect;
@@ -26,12 +28,34 @@ std::vector<Bullet> &Gun::getBulVect(){
 int Gun::getFireCase() {
 	return sCase;
 }
+int Gun::getGunType() {
+	return gunType;
+}
+float Gun::getDamage() {
+	return damage;
+}
 void Gun::setTexture(sf::Texture& nTexture) {
 	bulText = nTexture;
 }
 void Gun::setBound(int xBound, int yBound) {
 	bound[0] = xBound;
 	bound[1] = yBound;
+}
+void Gun::setGunType(int nGunType) {//set guntype
+	gunType = nGunType;
+	switch (gunType) {
+	case 0:
+		damage = cfg->getConfig("pulseGunDmg",1.0f);//pulse gun has default damage of 1
+		break;
+	case 1:
+		damage = cfg->getConfig("pulseGunDmg", 1.0f);
+		break;
+	default:
+		damage = cfg->getConfig("pulseGunDmg", 1.0f);
+	}
+}
+void Gun::setDamage(float nDamage) {//Change damage to another number
+	damage = nDamage;
 }
 void Gun::setN_Pulse(int newPulse) {
 	nPulse = newPulse;
@@ -115,7 +139,7 @@ void Gun::fireCheck(sf::Vector2f nPos, float nRot, float nSpeed, float nMinFireT
 	minFireTime = nMinFireTime;
 	sCase = 1;
 }
-void Gun::main(int gunType) {
+void Gun::main() {
 	for (std::vector<Bullet>::iterator i = bulVect.begin(); i != bulVect.end(); i++) {//loop through all bullets
 		i->main();
 	}

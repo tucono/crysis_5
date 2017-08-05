@@ -10,16 +10,16 @@ void Character::damage(int dmg) {
 void Character::heal(int heal) {
 	health += heal;
 }
-int Character::getHealth() {
+float Character::getHealth() {
 	return health;
 }
 void Character::setGunPulse(int nPulse) {
-	gun.setN_Pulse(nPulse);
+	gun->setN_Pulse(nPulse);
 }
 void Character::setGunFireAngle(float nAngle) {
-	gun.setFireAngle(nAngle);
+	gun->setFireAngle(nAngle);
 }
 Gun &Character::getGun() {
-	return gun;
+	return *gun;
 }
 void Character::main(){}
